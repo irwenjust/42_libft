@@ -19,11 +19,19 @@ static int	is_space_or_not(char c)
 		|| c == '\v' || c == '\f');
 }
 
+static int	check_sign(char c, int sig)
+{
+	if (c == '-')
+		sig = -1;
+	return (sig);
+}
+
 int	ft_atoi(const char *str)
 {
 	int		i;
-	long	num;
 	int		sig;
+	long	num;
+	long	check;
 
 	i = 0;
 	num = 0;
@@ -32,17 +40,17 @@ int	ft_atoi(const char *str)
 		i++;
 	if (str[i] == '+' || str[i] == '-')
 	{
-		if (str[i] == '-')
-			sig = -1;
+		sig = check_sign(str[i], sig);
 		i++;
 	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		num = num * 10 + str[i++] - '0';
-		if (num < 0 && sig == 1)
+		check = num * 10 + str[i++] - '0';
+		if (check / 10 != num && sig == 1)
 			return (-1);
-		if (num < 0 && sig == -1)
+		if (check / 10 != num && sig == -1)
 			return (0);
+		num = check;
 	}
 	return (sig * num);
 }
